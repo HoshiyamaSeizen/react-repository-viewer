@@ -1,9 +1,9 @@
-import { FormEvent, useContext, useRef } from 'react';
+import { FormEvent, useContext } from 'react';
 import { StoreContext } from '../stores/store';
 import FoundRepos from './FoundRepos';
 import { observer } from 'mobx-react-lite';
-import { GET_USER_REPOS, SEARCH_REPOS } from '../graphql/queries';
 import SearchBar from './SearchBar';
+import Paginator from './Paginator';
 
 const RepositoryListPage = observer(() => {
 	const store = useContext(StoreContext);
@@ -13,13 +13,21 @@ const RepositoryListPage = observer(() => {
 		store.setSearch(value);
 	};
 
+	const onPageChange = (target: number) => {
+		if (target < store.currentPage) store.prevPage();
+		if (target > store.currentPage) store.nextPage();
+		store.setCurrentPage(target);
+	};
+
 	return (
 		<div>
 			<SearchBar onSearch={onSearch} />
-			<FoundRepos
-				query={store.searchText ? SEARCH_REPOS : GET_USER_REPOS}
-				searchText={store.searchText}
+			<Paginator
+				current={store.currentPage}
+				total={store.totalPages}
+				onPageChange={onPageChange}
 			/>
+			<FoundRepos />
 		</div>
 	);
 });
