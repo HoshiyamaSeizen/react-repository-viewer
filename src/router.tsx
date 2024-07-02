@@ -16,6 +16,7 @@ export const router = createBrowserRouter(
 		},
 	],
 	{
+		// basename is set in vite.config.ts and in github/workflows/deploy.yml as env
 		basename: import.meta.env.VITE_BASENAME || '',
 	}
 );

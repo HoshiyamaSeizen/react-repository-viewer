@@ -16,6 +16,7 @@ const RepositoryInfoPage = observer(() => {
 		},
 	});
 
+	// Set data from the query into storage
 	useEffect(() => {
 		if (!loading && !error) {
 			store.setRepoData(data.repository);

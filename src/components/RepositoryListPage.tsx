@@ -9,6 +9,7 @@ const RepositoryListPage = observer(() => {
 	const [checkPage, setCheckPage] = useState(true);
 	const store = useContext(StoreContext);
 
+	// Perform search by given query
 	const onSearch = useCallback(
 		(e: FormEvent, value: string) => {
 			e?.preventDefault();
@@ -17,6 +18,7 @@ const RepositoryListPage = observer(() => {
 		[store]
 	);
 
+	// Change pages
 	const onPageChange = useCallback(
 		(target: number) => {
 			if (target > store.totalPages) return store.startPage();
@@ -27,10 +29,12 @@ const RepositoryListPage = observer(() => {
 		[store]
 	);
 
+	// Set search query from localstorage on start
 	useEffect(() => {
 		if (store.initSearch) onSearch(null!, store.initSearch);
 	}, [onSearch, store.initSearch]);
 
+	// Set page from localstorage on start
 	useEffect(() => {
 		if (checkPage && store.pageInfo && store.initPage !== 1) onPageChange(store.initPage);
 		if (checkPage && store.pageInfo) setCheckPage(false);

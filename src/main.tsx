@@ -9,6 +9,7 @@ import { GET_VIEWER_LOGIN } from './graphql/queries.ts';
 
 const graphql = init();
 
+// Need to get viewer's login for searching his repositories by default
 graphql.query({ query: GET_VIEWER_LOGIN }).then(({ data }) => {
 	const store = new Store(data.viewer.login);
 
