@@ -36,12 +36,23 @@ export class Store {
 			prevPage: action,
 			nextPage: action,
 			stopSkip: action,
+			startPage: action,
 			totalPages: computed,
+			initSearch: computed,
+			initPage: computed,
 		});
 	}
 
 	get totalPages() {
 		return Math.ceil(this.resultCount / this.amountPerPage);
+	}
+
+	get initSearch() {
+		return localStorage.getItem('search') || '';
+	}
+
+	get initPage() {
+		return +(localStorage.getItem('page') || 1);
 	}
 
 	setData(data: Query) {
@@ -59,11 +70,14 @@ export class Store {
 	}
 
 	setSearch(searchText: string) {
+		if (this.searchText !== searchText) this.startPage();
 		this.searchText = searchText;
+		localStorage.setItem('search', searchText);
 	}
 
 	setCurrentPage(page: number) {
 		this.currentPage = page;
+		localStorage.setItem('page', page.toString());
 	}
 
 	prevPage(diff: number = 1) {
@@ -80,6 +94,14 @@ export class Store {
 		this.first = Math.max(10 * (diff - 1), 10);
 		this.last = null;
 		if (diff > 1) this.skip = true;
+	}
+
+	startPage() {
+		this.after = '';
+		this.before = '';
+		this.first = 10;
+		this.last = null;
+		this.currentPage = 1;
 	}
 
 	stopSkip() {
