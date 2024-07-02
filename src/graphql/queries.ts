@@ -28,20 +28,8 @@ export const SEARCH_REPOS = gql`
 							login
 						}
 						stargazerCount
+						pushedAt
 						url
-						defaultBranchRef {
-							target {
-								... on Commit {
-									history(first: 1) {
-										edges {
-											node {
-												committedDate
-											}
-										}
-									}
-								}
-							}
-						}
 					}
 				}
 			}
@@ -77,6 +65,27 @@ export const SKIP_SEARCH_REPOS = gql`
 				hasPreviousPage
 				hasNextPage
 			}
+		}
+	}
+`;
+
+export const GET_REPO_INFO = gql`
+	query getRepoInfo($owner: String!, $name: String!) {
+		repository(owner: $owner, name: $name) {
+			name
+			stargazerCount
+			pushedAt
+			owner {
+				login
+				avatarUrl
+				url
+			}
+			languages(first: 5, orderBy: { field: SIZE, direction: DESC }) {
+				nodes {
+					name
+				}
+			}
+			description
 		}
 	}
 `;

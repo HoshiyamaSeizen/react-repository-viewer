@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { QueryResult } from '@apollo/client';
-import { TRelayPageInfo } from '@apollo/client/utilities/policies/pagination';
+import { PageInfo, Query, Repository } from '@octokit/graphql-schema';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { createContext } from 'react';
 
 export class Store {
-	data: QueryResult = null!;
-	repos = [];
-	pageInfo: TRelayPageInfo = null!;
+	data: Query = null!;
+	repoData: Repository = null!;
+	pageInfo: PageInfo = null!;
 	searchText = '';
 	resultCount = 0;
 	currentPage = 1;
@@ -21,7 +19,7 @@ export class Store {
 	constructor() {
 		makeObservable(this, {
 			data: observable,
-			repos: observable,
+			repoData: observable,
 			pageInfo: observable,
 			searchText: observable,
 			resultCount: observable,
@@ -32,6 +30,7 @@ export class Store {
 			last: observable,
 			skip: observable,
 			setData: action,
+			setRepoData: action,
 			setSearch: action,
 			setCurrentPage: action,
 			prevPage: action,
@@ -45,15 +44,18 @@ export class Store {
 		return Math.ceil(this.resultCount / this.amountPerPage);
 	}
 
-	setData(data: any) {
+	setData(data: Query) {
 		this.data = data;
 		this.pageInfo = data.search.pageInfo;
 
 		if (this.skip) this.stopSkip();
 		else {
-			this.repos = data.search.edges;
 			this.resultCount = data.search.repositoryCount;
 		}
+	}
+
+	setRepoData(data: Repository) {
+		this.repoData = data;
 	}
 
 	setSearch(searchText: string) {
@@ -65,7 +67,7 @@ export class Store {
 	}
 
 	prevPage(diff: number = 1) {
-		this.before = this.pageInfo.hasPreviousPage ? this.pageInfo.startCursor : '';
+		this.before = this.pageInfo.hasPreviousPage ? this.pageInfo.startCursor! : '';
 		this.after = '';
 		this.last = Math.max(10 * (diff - 1), 10);
 		this.first = null;
@@ -73,7 +75,7 @@ export class Store {
 	}
 
 	nextPage(diff: number = 1) {
-		this.after = this.pageInfo.hasNextPage ? this.pageInfo.endCursor : this.after;
+		this.after = this.pageInfo.hasNextPage ? this.pageInfo.endCursor! : this.after;
 		this.before = '';
 		this.first = Math.max(10 * (diff - 1), 10);
 		this.last = null;

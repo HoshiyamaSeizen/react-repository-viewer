@@ -3,6 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { useContext, useEffect } from 'react';
 import { StoreContext } from '../stores/store';
 import { SEARCH_REPOS, SKIP_SEARCH_REPOS } from '../graphql/queries';
+import { Repository } from '@octokit/graphql-schema';
+import { Link } from 'react-router-dom';
 
 const FoundRepos = observer(() => {
 	const store = useContext(StoreContext);
@@ -31,7 +33,19 @@ const FoundRepos = observer(() => {
 
 	return (
 		<div>
-			<pre>{JSON.stringify(store.data, null, 4)}</pre>
+			{store.data?.search.edges?.map((edge) => {
+				if (!edge) return;
+				const repo = edge.node! as Repository;
+				const name = `${repo.owner.login}/${repo.name}`;
+				return (
+					<div key={name}>
+						<Link to={`repository/${name}`}>{name}</Link>
+						<p>Stars: {repo.stargazerCount}</p>
+						<p>Last commit: {repo.pushedAt}</p>
+						<a>{repo.url}</a>
+					</div>
+				);
+			})}
 		</div>
 	);
 });

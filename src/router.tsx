@@ -10,7 +10,7 @@ export const router = createBrowserRouter([
 		errorElement: <ErrorPage />,
 	},
 	{
-		path: '/repository/:id',
+		path: '/repository/:owner/:name',
 		element: <RepositoryInfoPage />,
 	},
 ]);
