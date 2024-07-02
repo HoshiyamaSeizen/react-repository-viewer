@@ -39,12 +39,12 @@ const RepositoryListPage = observer(() => {
 	return (
 		<div className="repository-list-page">
 			<SearchBar onSearch={onSearch} initValue={store.initSearch} />
+			<FoundRepos />
 			<Paginator
 				current={store.currentPage}
 				total={store.totalPages}
 				onPageChange={onPageChange}
 			/>
-			<FoundRepos />
 		</div>
 	);
 });

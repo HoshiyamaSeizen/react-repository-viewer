@@ -28,7 +28,7 @@ const FoundRepos = observer(() => {
 		}
 	}, [loading, error, data, store]);
 
-	if (loading || skip) return <p>Loading...</p>;
+	if (loading || skip) return <p className="loading">Loading...</p>;
 	if (error) return <p>Error: {error.message}</p>;
 
 	return (
