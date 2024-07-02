@@ -15,9 +15,12 @@ export class Store {
 	first: number | null = 10;
 	last: number | null = null!;
 	skip = false;
+	login: string;
 
-	constructor() {
+	constructor(login: string) {
+		this.login = login;
 		makeObservable(this, {
+			login: observable,
 			data: observable,
 			repoData: observable,
 			pageInfo: observable,

@@ -9,12 +9,12 @@ import { Link } from 'react-router-dom';
 const FoundRepos = observer(() => {
 	const store = useContext(StoreContext);
 
-	const { searchText, after, before, first, last, skip } = store;
+	const { searchText, after, before, first, last, skip, login } = store;
 	const query = skip ? SKIP_SEARCH_REPOS : SEARCH_REPOS;
 
 	const { loading, error, data } = useQuery(query, {
 		variables: {
-			searchText: searchText || `user:${'HoshiyamaSeizen'}`,
+			searchText: searchText || `user:${login}`,
 			after,
 			before,
 			first,

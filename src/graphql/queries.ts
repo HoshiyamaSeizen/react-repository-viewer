@@ -1,7 +1,12 @@
 import { gql } from '@apollo/client';
 
-//TODO: query to get login
-//TODO: save to localstorage
+export const GET_VIEWER_LOGIN = gql`
+	query getViewerLogin {
+		viewer {
+			login
+		}
+	}
+`;
 
 export const SEARCH_REPOS = gql`
 	query SearchRepos(
