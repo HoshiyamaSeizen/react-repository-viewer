@@ -26,23 +26,30 @@ const RepositoryInfoPage = observer(() => {
 	if (error) return <p>Error: {error.message}</p>;
 
 	return (
-		<div>
-			<Link to={'/'}>Back</Link>
-			<div>
-				<p>{name}</p>
-				<p>Stars: {store.repoData.stargazerCount}</p>
-				<p>Last commit: {store.repoData.pushedAt}</p>
+		<div className="repository-info-page">
+			<Link className="back-button" to={'/'}>
+				Back
+			</Link>
+			<div className="info">
+				<h2 className="name">{name}</h2>
+				<p className="stars">{store.repoData.stargazerCount} ★</p>
+				<p className="commit">Last commit: {store.repoData.pushedAt}</p>
 			</div>
-			<div>
+			<div className="description">
+				<h2>Description</h2>
 				<p>{store.repoData.description}</p>
 			</div>
-			<div>
-				<img width={64} src={store.repoData.owner?.avatarUrl} alt="pfp" />
-				<p>{store.repoData.owner?.name}</p>
-				<a href={store.repoData.owner?.url}>Link</a>
+			<div className="owner">
+				<h2>Owner</h2>
+				<div className="user">
+					<img src={store.repoData.owner?.avatarUrl} alt="pfp" />
+					<a href={store.repoData.owner?.url} target="_blank">
+						{store.repoData.owner?.login}
+					</a>
+				</div>
 			</div>
-			<div>
-				<p>Languages</p>
+			<div className="languages">
+				<h2>Languages</h2>
 				<ul>
 					{store.repoData.languages?.nodes?.map((lang) => (
 						<li key={lang?.name}>{lang?.name}</li>

@@ -20,7 +20,7 @@ const Paginator = ({ current, total, onPageChange }: Props) => {
 		);
 	}
 
-	return <div>{buttonList}</div>;
+	return <div className="paginator">{buttonList}</div>;
 };
 
 export default Paginator;

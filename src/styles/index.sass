@@ -1,4 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap')
+
 :root
-	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif
+	padding: 40px
+	overflow-y: hidden
+
+*
+	margin: 0
+	padding: 0
+	box-sizing: border-box
+	font-family: "Roboto", sans-serif
 	line-height: 1.5
 	font-weight: 400
+
+a
+	color: darkgreen
+	&:hover
+		color: green
+
+.repository-list-page
+	display: flex
+	flex-direction: column
+	align-items: center
+	gap: 20px
+	height: calc( 100vh - 80px )
+
+.search
+	input
+		width: 373px
+		padding: 10px
+		font-size: 1.1rem
+	button
+		margin-left: 5px
+		padding: 10px
+		font-size: 1.1rem
+
+.paginator
+	display: flex
+	gap: 15px
+	button
+		background-color: white
+		width: 32px
+		height: 32px
+		transition: all 200ms ease-in-out
+		&:hover
+			background-color: darken(white, 5%)
+		&:disabled
+			background-color: darken(white, 20%)
+			border: none
+
+.repo-list-container
+	width: 600px
+	flex-grow: 1
+	overflow-y: auto
+	.repo-list
+		display: flex
+		flex-direction: column
+		gap: 10px
+		margin: 0 20px
+		.repo-item
+			padding: 15px 30px
+			border: 2px solid darkgrey
+			border-radius: 8px
+			p, a
+				font-size: 0.9rem
+			.name
+				font-size: 1.2rem
+				font-weight: 500
+				color: black
+				text-decoration: none
+				&:hover
+					color: darkgreen
+					text-decoration: underline
+			.stars
+				font-size: 1.2rem
+
+.repository-info-page
+	margin: 20px 50px
+	display: flex
+	flex-direction: column
+	gap: 20px
+	.back-button
+	.info
+		.name
+			font-size: 2rem
+			font-weight: 500
+		.stars
+			font-size: 1.2rem
+	.user
+		padding: 10px
+		width: fit-content
+		display: flex
+		gap: 10px
+		align-items: center
+		border: 2px solid lightgray
+		border-radius: 10px
+		img
+			height: 48px
+			width: 48px
+			border-radius: 50%
+	.languages ul
+		list-style-position: inside

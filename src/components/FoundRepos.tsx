@@ -32,20 +32,26 @@ const FoundRepos = observer(() => {
 	if (error) return <p>Error: {error.message}</p>;
 
 	return (
-		<div>
-			{store.data?.search.edges?.map((edge) => {
-				if (!edge) return;
-				const repo = edge.node! as Repository;
-				const name = `${repo.owner.login}/${repo.name}`;
-				return (
-					<div key={name}>
-						<Link to={`repository/${name}`}>{name}</Link>
-						<p>Stars: {repo.stargazerCount}</p>
-						<p>Last commit: {repo.pushedAt}</p>
-						<a>{repo.url}</a>
-					</div>
-				);
-			})}
+		<div className="repo-list-container">
+			<div className="repo-list">
+				{store.data?.search.edges?.map((edge) => {
+					if (!edge) return;
+					const repo = edge.node! as Repository;
+					const name = `${repo.owner.login}/${repo.name}`;
+					return (
+						<div key={name} className="repo-item">
+							<Link className="name" to={`repository/${name}`}>
+								{name}
+							</Link>
+							<p className="stars">{repo.stargazerCount} ★</p>
+							<p className="commit">Last commit: {repo.pushedAt}</p>
+							<a className="url" href={repo.url} target="_blank">
+								{repo.url}
+							</a>
+						</div>
+					);
+				})}
+			</div>
 		</div>
 	);
 });

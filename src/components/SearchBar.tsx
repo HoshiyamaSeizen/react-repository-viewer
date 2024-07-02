@@ -13,7 +13,7 @@ const SearchBar = ({ onSearch, initValue }: Params) => {
 	}, [onSearch, initValue]);
 
 	return (
-		<div>
+		<div className="search">
 			<form onSubmit={(event) => onSearch(event, search.current.value)}>
 				<input ref={search} type="text" />
 				<button type="submit">Search</button>

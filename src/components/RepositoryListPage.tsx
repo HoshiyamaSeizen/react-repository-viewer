@@ -37,7 +37,7 @@ const RepositoryListPage = observer(() => {
 	}, [checkPage, onPageChange, store.initPage, store.pageInfo]);
 
 	return (
-		<div>
+		<div className="repository-list-page">
 			<SearchBar onSearch={onSearch} initValue={store.initSearch} />
 			<Paginator
 				current={store.currentPage}
