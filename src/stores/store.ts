@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { QueryResult } from '@apollo/client';
 import { TRelayPageInfo } from '@apollo/client/utilities/policies/pagination';
 import { action, computed, makeObservable, observable } from 'mobx';
@@ -5,6 +6,7 @@ import { createContext } from 'react';
 
 export class Store {
 	data: QueryResult = null!;
+	repos = [];
 	pageInfo: TRelayPageInfo = null!;
 	searchText = '';
 	resultCount = 0;
@@ -19,6 +21,7 @@ export class Store {
 	constructor() {
 		makeObservable(this, {
 			data: observable,
+			repos: observable,
 			pageInfo: observable,
 			searchText: observable,
 			resultCount: observable,
@@ -42,19 +45,15 @@ export class Store {
 		return Math.ceil(this.resultCount / this.amountPerPage);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	setData(data: any) {
 		this.data = data;
-
-		this.pageInfo = this.searchText
-			? data.search.pageInfo
-			: data.repositoryOwner.repositories.pageInfo;
-
-		this.resultCount = this.searchText
-			? data.search.repositoryCount
-			: data.repositoryOwner.repositories.totalCount;
+		this.pageInfo = data.search.pageInfo;
 
 		if (this.skip) this.stopSkip();
+		else {
+			this.repos = data.search.edges;
+			this.resultCount = data.search.repositoryCount;
+		}
 	}
 
 	setSearch(searchText: string) {

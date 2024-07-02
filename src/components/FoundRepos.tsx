@@ -2,16 +2,22 @@ import { useQuery } from '@apollo/client';
 import { observer } from 'mobx-react-lite';
 import { useContext, useEffect } from 'react';
 import { StoreContext } from '../stores/store';
-import { GET_USER_REPOS, SEARCH_REPOS } from '../graphql/queries';
+import { SEARCH_REPOS, SKIP_SEARCH_REPOS } from '../graphql/queries';
 
 const FoundRepos = observer(() => {
 	const store = useContext(StoreContext);
 
 	const { searchText, after, before, first, last, skip } = store;
-	const query = searchText ? SEARCH_REPOS : GET_USER_REPOS;
+	const query = skip ? SKIP_SEARCH_REPOS : SEARCH_REPOS;
 
 	const { loading, error, data } = useQuery(query, {
-		variables: { searchText, after, before, first, last },
+		variables: {
+			searchText: searchText || `user:${'HoshiyamaSeizen'}`,
+			after,
+			before,
+			first,
+			last,
+		},
 	});
 
 	useEffect(() => {
