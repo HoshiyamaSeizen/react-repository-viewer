@@ -16,6 +16,6 @@ export const router = createBrowserRouter(
 		},
 	],
 	{
-		basename: '/react-repository-viewer/',
+		basename: import.meta.env.VITE_BASENAME || '',
 	}
 );
