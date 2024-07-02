@@ -5,19 +5,22 @@ interface Props {
 }
 
 const Paginator = ({ current, total, onPageChange }: Props) => {
-	return (
-		<div>
-			<button onClick={() => onPageChange(current - 1)} disabled={current <= 1}>
-				Prev
+	const buttonList = [];
+
+	for (let i = 1; i <= 10; i++) {
+		buttonList.push(
+			<button
+				key={i}
+				onClick={() => onPageChange(i)}
+				hidden={total < i}
+				disabled={current === i}
+			>
+				{i}
 			</button>
-			<button>
-				{current}/{total}
-			</button>
-			<button onClick={() => onPageChange(current + 1)} disabled={current + 1 > total}>
-				Next
-			</button>
-		</div>
-	);
+		);
+	}
+
+	return <div>{buttonList}</div>;
 };
 
 export default Paginator;

@@ -12,6 +12,9 @@ export class Store {
 	amountPerPage = 10;
 	before = '';
 	after = '';
+	first: number | null = 10;
+	last: number | null = null!;
+	skip = false;
 
 	constructor() {
 		makeObservable(this, {
@@ -22,13 +25,15 @@ export class Store {
 			currentPage: observable,
 			before: observable,
 			after: observable,
+			first: observable,
+			last: observable,
+			skip: observable,
 			setData: action,
 			setSearch: action,
-			setResultCount: action,
 			setCurrentPage: action,
 			prevPage: action,
 			nextPage: action,
-			setPageInfo: action,
+			stopSkip: action,
 			totalPages: computed,
 		});
 	}
@@ -37,34 +42,49 @@ export class Store {
 		return Math.ceil(this.resultCount / this.amountPerPage);
 	}
 
-	setData(data: QueryResult) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	setData(data: any) {
 		this.data = data;
+
+		this.pageInfo = this.searchText
+			? data.search.pageInfo
+			: data.repositoryOwner.repositories.pageInfo;
+
+		this.resultCount = this.searchText
+			? data.search.repositoryCount
+			: data.repositoryOwner.repositories.totalCount;
+
+		if (this.skip) this.stopSkip();
 	}
 
 	setSearch(searchText: string) {
 		this.searchText = searchText;
 	}
 
-	setResultCount(resultCount: number) {
-		this.resultCount = resultCount;
-	}
-
 	setCurrentPage(page: number) {
 		this.currentPage = page;
 	}
 
-	prevPage() {
+	prevPage(diff: number = 1) {
 		this.before = this.pageInfo.hasPreviousPage ? this.pageInfo.startCursor : '';
 		this.after = '';
+		this.last = Math.max(10 * (diff - 1), 10);
+		this.first = null;
+		if (diff > 1) this.skip = true;
 	}
 
-	nextPage() {
+	nextPage(diff: number = 1) {
 		this.after = this.pageInfo.hasNextPage ? this.pageInfo.endCursor : this.after;
 		this.before = '';
+		this.first = Math.max(10 * (diff - 1), 10);
+		this.last = null;
+		if (diff > 1) this.skip = true;
 	}
 
-	setPageInfo(pageInfo: TRelayPageInfo) {
-		this.pageInfo = pageInfo;
+	stopSkip() {
+		this.skip = false;
+		if (this.first) this.nextPage();
+		if (this.last) this.prevPage();
 	}
 }
 

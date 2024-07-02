@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { typePolicies } from './typePolicies';
 
 export default () => {
 	const { VITE_GITHUB_TOKEN } = import.meta.env;
@@ -18,7 +19,9 @@ export default () => {
 	});
 
 	const client = new ApolloClient({
-		cache: new InMemoryCache(),
+		cache: new InMemoryCache({
+			typePolicies,
+		}),
 		link: authLink.concat(httpLink),
 	});
 

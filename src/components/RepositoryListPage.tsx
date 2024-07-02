@@ -14,8 +14,8 @@ const RepositoryListPage = observer(() => {
 	};
 
 	const onPageChange = (target: number) => {
-		if (target < store.currentPage) store.prevPage();
-		if (target > store.currentPage) store.nextPage();
+		if (target < store.currentPage) store.prevPage(store.currentPage - target);
+		if (target > store.currentPage) store.nextPage(target - store.currentPage);
 		store.setCurrentPage(target);
 	};
 
